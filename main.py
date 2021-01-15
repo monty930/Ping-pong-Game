@@ -35,6 +35,17 @@ ball.goto(0, 0)
 ball.dx = 4
 ball.dy = 4
 
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Player A: 0  Player B: 0", align="center", font=("Courier", 24, "normal"))
+
+
 # function
 def paddle1_up():
     y = paddle1.ycor()
@@ -66,12 +77,15 @@ wn.onkeypress(paddle1_down, "s")
 wn.onkeypress(paddle2_up, "Up")
 wn.onkeypress(paddle2_down, "Down")
 
-cor_x = 0
-cor_y = 0
+score1 = 0
+score2 = 0
 
 
 # Main game loop
 def f_m():
+
+    global score1
+    global score2
 
     wn.update()
 
@@ -86,17 +100,29 @@ def f_m():
         ball.sety(-290)
         ball.dy *= -1
 
-    if ball.xcor() > 390:
-        ball.setx(390)
+    if ball.xcor() > 350:
+        score1 += 1
+        pen.clear()
+        pen.write("Player A: {}  Player B: {}".format(score1, score2), align="center", font=("Courier", 24, "normal"))
+        ball.goto(0, 0)
         ball.dx *= -1
 
     if ball.xcor() < -390:
-        ball.setx(-390)
+        score2 += 1
+        pen.clear()
+        pen.write("Player A: {}  Player B: {}".format(score1, score2), align="center", font=("Courier", 24, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    if ball.xcor() < -340 and paddle1.ycor() + 50 > ball.ycor() > paddle1.ycor() - 50:
+        ball.dx *= -1
+
+    elif ball.xcor() > 340 and paddle2.ycor() + 50 > ball.ycor() > paddle2.ycor() - 50:
         ball.dx *= -1
 
 
-exit = False
+exit_check = False
 
 
-while not exit:
+while not exit_check:
     wn.ontimer(f_m(), 10)
