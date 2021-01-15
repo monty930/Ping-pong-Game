@@ -1,2 +1,2 @@
-# Ping-pong-Game
+# Ping-pong Game
 Two player retro pong game.
